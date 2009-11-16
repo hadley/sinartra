@@ -1,6 +1,3 @@
-library(mutatr)
-library(stringr)
-
 #' Parse route (with parameters) into regular expression.  
 #' 
 route_re <- function(route) {

@@ -1,6 +1,3 @@
-source("help-mime.r")
-library(brew)
-
 # Return an error page
 error <- function(status) {
   list(

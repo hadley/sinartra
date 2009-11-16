@@ -1,6 +1,3 @@
-source("route.r")
-source("output.r")
-
 Router <- Object$clone()$do({
   self$matchers <- list()
   
