@@ -31,8 +31,12 @@ route_matcher <- function(route) {
     match = function(path) str_detect(path, re$match),
     params = function(path) {
       matches <- str_match(path, re$match)[1, -1]
-      # c is simplest way convert from array to vector
-      c(tapply(matches, re$params, "c", simplify = FALSE))
+      if (length(re$params) > 0) {
+        # c is simplest way convert from array to vector
+        c(tapply(matches, re$params, "c", simplify = FALSE))
+      } else {
+        list()
+      }
     }
   )
 }
