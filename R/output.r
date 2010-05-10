@@ -11,8 +11,8 @@ pass <- function() structure(TRUE, class = "pass")
 is.pass <- function(x) inherits(x, "pass")
 
 # Return a static file, if present.  Otherwise pass.
-static_file <- function(splat) {
-  path <- file.path("public", splat)
+static_file <- function(splat, path = getwd()) {
+  path <- file.path(path, "public", splat)
   if (!file.exists(path)) return(pass())
   
   list(
@@ -21,7 +21,7 @@ static_file <- function(splat) {
   )  
 }
 
-render_brew <- function(template, params = list()) {
+render_brew <- function(template, params = list(), path = getwd()) {
   if (is.list(params)) {
     env <- new.env(TRUE)
     for(name in names(params)) {
@@ -30,7 +30,7 @@ render_brew <- function(template, params = list()) {
     params <- env
   }
   
-  path <- file.path("views", str_join(template, ".html"))
+  path <- file.path(path, "views", str_join(template, ".html"))
   if (!file.exists(path)) stop("Can not find ", template, " template ",
     call. = FALSE)
 
