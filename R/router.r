@@ -13,7 +13,14 @@ Router <- Object$clone()$do({
       if (matcher$match(path)) {
         params <- matcher$params(path)
         
-        res <- do.call(matcher$callback, params)
+        call <- bquote(do.call(.(matcher$callback), .(params)))
+        res <- try_capture_stack(call, sys.frame())
+        
+        if (is.error(res)) {
+          traceback <- str_c(create_traceback(res$calls), collapse = "\n")
+          return(str_c("ERROR: ", res$message, "\n\n", traceback))
+        }
+        
         if (!is.pass(res)) return(res)
       }
     }
@@ -23,3 +30,6 @@ Router <- Object$clone()$do({
   }
   
 })
+
+
+is.error <- function(x) inherits(x, "simpleError")
