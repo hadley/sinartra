@@ -1,5 +1,5 @@
 # Return an error page
-error <- function(status) {
+error <- function(status, path) {
   list(
     payload = c("file" = str_join("public/errors/", status, ".html")), 
     status = status
@@ -11,8 +11,8 @@ pass <- function() structure(TRUE, class = "pass")
 is.pass <- function(x) inherits(x, "pass")
 
 # Return a static file, if present.  Otherwise pass.
-static_file <- function(splat, path = getwd()) {
-  path <- file.path(path, "public", splat)
+static_file <- function(path) {
+  path <- normalizePath(path)
   if (!file.exists(path)) return(pass())
   
   list(
