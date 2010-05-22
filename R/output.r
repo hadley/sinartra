@@ -15,10 +15,7 @@ static_file <- function(path) {
   path <- normalizePath(path)
   if (!file.exists(path)) return(pass())
   
-  list(
-    payload = c("file" = str_join(readLines(path), collapse = "\n")),
-    "content-type" = mime_type(path)
-  )  
+  list(file = path, mime_type(path))
 }
 
 render_brew <- function(template, params = list(), path = getwd()) {
