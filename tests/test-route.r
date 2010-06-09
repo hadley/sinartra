@@ -60,6 +60,6 @@ test_that("single splat matches all", {
   paths <- c("/hadley", "/hadley-test", "/ha/d/l/e/y/", "/hadley.wickham")
   for(path in paths) {
     expect_that(splat$match(path), is_true())
-    expect_that(splat$params(path), equals(list(splat = str_sub(path, 2))))
+    expect_that(splat$params(path), equals(list(splat = stringr::str_sub(path, 2))))
   }  
 })

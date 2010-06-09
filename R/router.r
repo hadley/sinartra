@@ -21,7 +21,7 @@
 #' }
 #' @name Router
 #' @export
-Router <- Object$clone()$do({
+Router <- mutatr::Object$clone()$do({
   self$matchers <- list()
   
   self$get <- function(route, callback) {
@@ -40,8 +40,8 @@ Router <- Object$clone()$do({
         res <- try_capture_stack(call, sys.frame())
         
         if (is.error(res)) {
-          traceback <- str_c(create_traceback(res$calls), collapse = "\n")
-          return(str_c("ERROR: ", res$message, "\n\n", traceback))
+          traceback <- stringr::str_c(create_traceback(res$calls), collapse = "\n")
+          return(stringr::str_c("ERROR: ", res$message, "\n\n", traceback))
         }
         
         if (!is.pass(res)) return(res)

@@ -5,7 +5,9 @@ Version: 0.1
 Author: Hadley Wickham <h.wickham@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: A port of sinatra to R.
-Depends: stringr, mutatr, brew, testthat
+Depends: mutatr
+Imports: stringr, brew
+Suggests: testthat
 License: GPL-2
 LazyData: true
 Collate: 'mime.r' 'output.r' 'route.r' 'router.r'

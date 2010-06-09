@@ -6,9 +6,9 @@
 #' @param path web app path
 #' @export
 error <- function(status = 404L, path = getwd()) {
-  path <- file.path(path, "public", "errors", str_c(status, ".html"))
+  path <- file.path(path, "public", "errors", stringr::str_c(status, ".html"))
   if (!file.exists(path)) {
-    msg <- str_c("Error status: ", status)
+    msg <- stringr::str_c("Error status: ", status)
     return(list(paylout = msg, "status code" = status))
   }
   
@@ -52,12 +52,12 @@ render_brew <- function(template, params = list(), path = getwd()) {
     params <- env
   }
   
-  path <- file.path(path, "views", str_join(template, ".html"))
+  path <- file.path(path, "views", stringr::str_join(template, ".html"))
   if (!file.exists(path)) stop("Can not find ", template, " template ",
     call. = FALSE)
 
   list(payload = 
-    str_join(capture.output(brew(path, envir = params)), collapse = "\n"))
+    stringr::str_join(capture.output(brew::brew(path, envir = params)), collapse = "\n"))
 }
 
 #' Redirect to new url.
@@ -69,7 +69,7 @@ redirect <- function(url, status = 301L) {
   list(
     payload = "Redirecting...", 
     "content-type" = 'text/html',
-    header = str_c('Location: ', url),
+    header = stringr::str_c('Location: ', url),
     "status code" = 302L
   )
 }
