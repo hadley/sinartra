@@ -1,3 +1,8 @@
+#' Compute mime type from file extension.
+#' Needs mechanism for user extension.
+#'
+#' @param path path to file
+#' @return mime string
 mime_type <- function(path) {
   ext <- strsplit(path, ".", fixed = TRUE)[[1L]]
   n <- length(ext)

@@ -8,3 +8,4 @@ Description: A port of sinatra to R.
 Depends: stringr, mutatr, brew, testthat
 License: GPL-2
 LazyData: true
+Collate: 'mime.r' 'output.r' 'route.r' 'router.r'

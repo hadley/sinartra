@@ -1,5 +1,9 @@
 #' Parse route (with parameters) into regular expression.  
-#' 
+#'
+#' @param route route url.
+#' @return 
+#'   \item{match}{regular expression to match route}
+#'   \item{params}{parameter names}
 route_re <- function(route) {
   # Escape special characters that can occur in both urls and regexps
   route <- str_replace(route, "([.])", "\\\\\\1")
@@ -20,10 +24,14 @@ route_re <- function(route) {
   )
 }
 
-#' @return List of two functions:
-#'   1) returns boolean giving whether path matches or
-#'   2) returns named list of parameters 
+#' Generate functions to match specified route.
 #'
+#' @param route route url
+#' @return 
+#'   \item{match}{function returning \code{TRUE} if argument matches route,
+#'     \code{FALSE} otherwise}
+#'   \item{params}{function that parses path and returns named list of
+#'      parameters}
 route_matcher <- function(route) {
   re <- route_re(route)
   
