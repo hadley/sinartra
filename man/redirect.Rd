@@ -8,4 +8,5 @@
 }
 \arguments{
   \item{url}{full url to redirect to}
+  \item{status}{http status code}
 }

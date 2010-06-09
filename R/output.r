@@ -63,6 +63,7 @@ render_brew <- function(template, params = list(), path = getwd()) {
 #' Redirect to new url.
 #'
 #' @param url full url to redirect to
+#' @param status http status code
 #' @export
 redirect <- function(url, status = 301L) {
   list(
