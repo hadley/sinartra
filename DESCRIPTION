@@ -9,4 +9,4 @@ Imports: mutatr, stringr, brew
 Suggests: testthat
 License: GPL-2
 LazyData: true
-Collate: 'mime.r' 'output.r' 'route.r' 'router.r'
+Collate: 'mime.r' 'output.r' 'render.r' 'route.r' 'router.r'
