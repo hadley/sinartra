@@ -1,3 +1,2 @@
-* render_text and render_json methods
 * absolute paths should be preserved (don't prefer)
 * capture and parse query parameters
