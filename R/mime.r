@@ -9,7 +9,7 @@ mime_type <- function(path) {
   
   if (n == 0) return()
   
-  c(
+  types <- c(
     "css" = "text/css",
     "gif" = "image/gif", # in R2HTML
     "js" = "text/javascript",
@@ -21,5 +21,7 @@ mime_type <- function(path) {
     "sgml"= "text/sgml", # in RGtk2
     "xml" = "text/xml",  # in RCurl
     "text/plain"
-  )[ext[n]]
+  )
+  
+  unname(types[ext[n]])
 }
