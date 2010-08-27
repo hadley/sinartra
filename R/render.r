@@ -5,7 +5,7 @@
 #' @param mime_type mime type
 #' @param ... other named arguments become other http headers
 render <- function(text, status = 200L, mime_type = "text/html", ...) {
-  text <- stringr:str_c(text, collapse = "\n")
+  text <- stringr::str_c(text, collapse = "\n")
   list(
     payload = text, 
     "content-type" = mime_type, 
