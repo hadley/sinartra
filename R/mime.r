@@ -15,6 +15,7 @@ mime_type <- function(path) {
     "js" = "text/javascript",
     "jpg" = "image/jpeg",
     "html" = "text/html",
+    "ico" = "image/x-icon",
     "pdf" = "application/pdf",
     "eps" = "application/postscript",
     "ps" = "application/postscript", # in GLMMGibbs, mclust
