@@ -29,7 +29,7 @@ render_brew <- function(template, params = list(), path = getwd()) {
     params <- env
   }
   
-  path <- file.path(path, "views", stringr::str_join(template, ".html"))
+  path <- file.path(path, "views", stringr::str_c(template, ".html"))
   if (!file.exists(path)) stop("Can not find ", template, " template ",
     call. = FALSE)
 

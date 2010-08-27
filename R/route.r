@@ -14,12 +14,12 @@ route_re <- function(route) {
   keys <- stringr::str_replace(params, ":", "")
   keys[keys == "*"] <- "splat"
   
-  match <- stringr::str_join("^", route, "$")
+  match <- stringr::str_c("^", route, "$")
   match <- stringr::str_replace(match, ":[a-zA-Z0-9_.]+", "([^/?&#]+)")
   match <- stringr::str_replace(match, "[*]", "(.*?)")
   
   list(
-    match = stringr::str_join(match, collapse = "/"),
+    match = stringr::str_c(match, collapse = "/"),
     params = keys
   )
 }
