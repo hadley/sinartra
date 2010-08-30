@@ -6,17 +6,17 @@
 #'   \item{params}{parameter names}
 route_re <- function(route) {
   # Escape special characters that can occur in both urls and regexps
-  route <- stringr::str_replace(route, "([.])", "\\\\\\1")
+  route <- stringr::str_replace_all(route, "([.])", "\\\\\\1")
   
   # Extract parameters
   params <- stringr::str_extract_all(route, ":[a-zA-Z0-9_.]+|[*]")[[1]]
   
-  keys <- stringr::str_replace(params, ":", "")
+  keys <- stringr::str_replace_all(params, ":", "")
   keys[keys == "*"] <- "splat"
   
   match <- stringr::str_c("^", route, "$")
-  match <- stringr::str_replace(match, ":[a-zA-Z0-9_.]+", "([^/?&#]+)")
-  match <- stringr::str_replace(match, "[*]", "(.*?)")
+  match <- stringr::str_replace_all(match, ":[a-zA-Z0-9_.]+", "([^/?&#]+)")
+  match <- stringr::str_replace_all(match, "[*]", "(.*?)")
   
   list(
     match = stringr::str_c(match, collapse = "/"),
