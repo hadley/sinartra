@@ -31,10 +31,11 @@ Router <- mutatr::Object$clone()$do({
     self$matchers[[length(self$matchers) + 1]] <- rm
   }
   
-  self$route <- function(path) {
+  self$route <- function(path, query) {
     for(matcher in rev(self$matchers)) {
       if (matcher$match(path)) {
         params <- matcher$params(path)
+        params$query <- query
         
         call <- bquote(do.call(.(matcher$callback), .(params)))
         res <- try_capture_stack(call, sys.frame())
