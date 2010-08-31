@@ -10,5 +10,5 @@
   \item{text}{a character vector}
   \item{status}{http status code}
   \item{mime_type}{mime type}
-  \item{...}{other named arguments become other http headers}
+  \item{headers}{character vector of http headers}
 }

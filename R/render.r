@@ -3,7 +3,7 @@
 #' @param text a character vector 
 #' @param status http status code
 #' @param mime_type mime type
-#' @param ... other named arguments become other http headers
+#' @param headers character vector of http headers
 render <- function(text, status = 200L, mime_type = "text/html", headers = c()) {
   text <- stringr::str_c(text, collapse = "\n")
   list(
