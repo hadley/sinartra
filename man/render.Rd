@@ -1,7 +1,7 @@
 \name{render}
 \alias{render}
 \title{Send output to browser...}
-\usage{render(text, status=200, mime_type="text/html", ...)}
+\usage{render(text, status=200, mime_type="text/html", headers=c())}
 
 \description{
   Send output to browser
