@@ -1,5 +1,4 @@
 * absolute paths should be preserved (don't prefer)
-* capture and parse query parameters
 * more R like interface
 * vignette explaining how it works
 * complete other HTTP verbs
