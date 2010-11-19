@@ -11,8 +11,11 @@ mime_type <- function(path) {
   
   types <- c(
     "css" = "text/css",
+    "png" = "image/png",
+    "tiff", "image/tiff",
     "gif" = "image/gif", # in R2HTML
     "js" = "text/javascript",
+    "jpeg" = "image/jpeg",
     "jpg" = "image/jpeg",
     "html" = "text/html",
     "ico" = "image/x-icon",
