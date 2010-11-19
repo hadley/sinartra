@@ -31,7 +31,7 @@ is.pass <- function(x) inherits(x, "pass")
 #' @param status http status code
 #' @export
 static_file <- function(path, status = 200L) {
-  path <- normalizePath(path)
+  path <- suppressWarnings(normalizePath(path))
   if (!file.exists(path)) return(pass())
   
   list(
