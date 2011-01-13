@@ -20,6 +20,7 @@
 #'     callback will be called with a "splat" argument
 #' }
 #' @name Router
+#' @import evaluate
 #' @export
 Router <- mutatr::Object$clone()$do({
   self$matchers <- list()
