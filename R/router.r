@@ -22,7 +22,7 @@
 #' @name Router
 #' @import evaluate
 #' @export
-Router <- mutatr::Object$clone()$do({
+Router <- mutatr::Object$clone(base_url = "", file_path = getwd())$do({
   self$matchers <- list()
   
   self$get <- function(route, callback) {
@@ -31,11 +31,12 @@ Router <- mutatr::Object$clone()$do({
     
     self$matchers[[length(self$matchers) + 1]] <- rm
   }
-  
+    
   self$route <- function(path, query) {
     for(matcher in rev(self$matchers)) {
-      if (matcher$match(path)) {
-        params <- matcher$params(path)
+      p <- str_replace(path, base_url, "")
+      if (matcher$match(p)) {
+        params <- matcher$params(p)
         params$query <- query
         
         call <- bquote(do.call(.(matcher$callback), .(params)))
@@ -53,6 +54,35 @@ Router <- mutatr::Object$clone()$do({
     # If none match, return 404
     error(404)
   }
+  
+  combine_url <- function(y) {
+    if(str_length(base_url) < 1) return(y)
+    if(str_sub(base_url, start = -1) == "/") base_url <- str_sub(base_url, end = -2) 
+    str_c(base_url, y, sep = "/")
+  }
+  combine_path <- function(b){ 
+    file.path(file_path, b)
+  }
+  
+  self$error <- function(..., path){
+    p <- combine_url(path)
+    error(..., path = p)
+  }
+  self$static_file <- function(path, ...) {
+    p <- combine_path(path)
+    static_file(path = p, ...)    
+  }
+
+  self$redirect <- function(url, ...) {
+    u <- combine_url(url)
+    redirect(url = u, ...)
+  }
+  
+  self$render_brew <- function(template, ...){
+    t <- combine_path(template)
+    render_brew(template = t, ...)
+  }
+  
 })
 
 
