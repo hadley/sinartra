@@ -29,16 +29,27 @@ is.pass <- function(x) inherits(x, "pass")
 #'
 #' @param path path to file
 #' @param status http status code
+#' @param remove boolean to remove file after being read
 #' @export
-static_file <- function(path, status = 200L) {
-  path <- normalizePath(path)
+static_file <- function(path, status = 200L, remove = FALSE) {
+  path <- suppressWarnings(normalizePath(path))
   if (!file.exists(path)) return(pass())
-  
-  list(
-    file = path, 
-    "content-type" = mime_type(path), 
-    "status code" = status
-  )
+  if(identical(remove, FALSE)) {
+  	list(
+	    file = path, 
+	    "content-type" = mime_type(path), 
+	    "status code" = status
+	  )
+	} else {
+		mType <- mime_type(path)
+		bytes <- readBin(path,'raw',file.info(path)$size)
+		unlink(path)
+		list(
+			payload = bytes,
+			"content-type" = mType,
+			"status code" = status
+		)
+	}
 }
 
 #' Redirect to new url.

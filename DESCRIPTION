@@ -1,7 +1,7 @@
 Package: sinartra
 Type: Package
 Title: A simple web app framework for R, based on sinatra.
-Version: 0.1
+Version: 0.1.1
 Author: Hadley Wickham <h.wickham@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: A port of sinatra to R.
