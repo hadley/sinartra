@@ -20,13 +20,9 @@ render <- function(text, status = 200L, mime_type = "text/html", headers = c()) 
 #' @param params list of parameters to be evaluated in template
 #' @param path web app path
 #' @export
-render_brew <- function(template, params = list(), path = getwd()) {
-  if (is.list(params)) {
-    env <- new.env(TRUE)
-    for(name in names(params)) {
-      env[[name]] <- params[[name]]
-    }
-    params <- env
+render_brew <- function(template, params = NULL, path = getwd()) {
+  if (is.list(params) && length(params) > 0) {
+    params <- list2env(params, parent = parent.frame())
   }
   
   path <- file.path(path, "views", stringr::str_c(template, ".html"))

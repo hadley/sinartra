@@ -1,0 +1,5 @@
+Version 0.2
+------------------------------------------------------------------------------
+
+* `render_brew` now evaluates the template in the correct environment so it
+  has access to local/unexported functions and variables
