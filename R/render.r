@@ -20,16 +20,18 @@ render <- function(text, status = 200L, mime_type = "text/html", headers = c()) 
 #' @param params list of parameters to be evaluated in template
 #' @param path web app path
 #' @export
-render_brew <- function(template, params = NULL, path = getwd()) {
-  if (is.list(params) && length(params) > 0) {
-    params <- list2env(params, parent = parent.frame())
-  }
-  
+render_brew <- function(template, params = NULL, path = getwd(), parent = parent.frame()) {
   path <- file.path(path, "views", stringr::str_c(template, ".html"))
   if (!file.exists(path)) stop("Can not find ", template, " template ",
     call. = FALSE)
 
-  render(capture.output(brew::brew(path, envir = params)))
+  if (is.list(params) && length(params) > 0) {
+    env <- list2env(params, parent = parent)
+  } else {
+    env <- parent
+  }
+
+  render(capture.output(brew::brew(path, envir = env)))
 }
 
 #' Produce JSON from an R object

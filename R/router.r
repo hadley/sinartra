@@ -22,8 +22,11 @@
 #' @name Router
 #' @import evaluate
 #' @export
-Router <- mutatr::Object$clone(base_url = "", file_path = getwd())$do({
+Router <- mutatr::Object$clone()$do({
   self$matchers <- list()
+  self$base_url  <- ""
+  self$base_path <- getwd()
+  
   
   self$get <- function(route, callback) {
     rm <- route_matcher(route)
@@ -34,7 +37,7 @@ Router <- mutatr::Object$clone(base_url = "", file_path = getwd())$do({
     
   self$route <- function(path, query) {
     for(matcher in rev(self$matchers)) {
-      p <- str_replace(path, base_url, "")
+      p <- str_replace(path, self$base_url, "")
       if (matcher$match(p)) {
         params <- matcher$params(p)
         params$query <- query
@@ -54,20 +57,26 @@ Router <- mutatr::Object$clone(base_url = "", file_path = getwd())$do({
     # If none match, return 404
     error(404)
   }
-  
+    
   combine_url <- function(y) {
-    if(str_length(base_url) < 1) return(y)
-    if(str_sub(base_url, start = -1) == "/") base_url <- str_sub(base_url, end = -2) 
-    str_c(base_url, y, sep = "/")
+    if(str_length(self$base_url) < 1) return(y)
+    u <- self$base_url
+    if(str_sub(u, start = -1) == "/") u <- str_sub(u, end = -2) 
+    str_c(u, y, sep = "/")
   }
-  combine_path <- function(b){ 
-    file.path(file_path, b)
+  combine_path <- function(y){ 
+    if(str_sub(y, end = 1) == "/"){
+      y
+    } else {
+      file.path(self$base_path, y)
+    }
   }
   
   self$error <- function(..., path){
     p <- combine_url(path)
     error(..., path = p)
   }
+  
   self$static_file <- function(path, ...) {
     p <- combine_path(path)
     static_file(path = p, ...)    
@@ -78,9 +87,10 @@ Router <- mutatr::Object$clone(base_url = "", file_path = getwd())$do({
     redirect(url = u, ...)
   }
   
-  self$render_brew <- function(template, ...){
-    t <- combine_path(template)
-    render_brew(template = t, ...)
+  self$render_brew <- function(..., path){
+    if(missing(path)) path <- self$base_path
+    
+    render_brew(..., path = path, parent = parent.frame())
   }
   
 })
