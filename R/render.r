@@ -39,6 +39,7 @@ render_brew <- function(template, params = list(), path = getwd()) {
 #' Produce JSON from an R object
 #'
 #' @param object R object to be converted to JSON
+#' @export
 render_json <- function(object) {
   json <- rjson::toJSON(object)
   render(json, mime_type = "application/json")
