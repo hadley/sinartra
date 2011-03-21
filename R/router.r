@@ -23,9 +23,14 @@
 #' @import evaluate
 #' @export
 Router <- mutatr::Object$clone()$do({
-  self$matchers <- list()
-  self$base_url  <- ""
-  self$base_path <- getwd()
+  self$matchers  <- list()
+  base_url  <- ""
+  file_path <- getwd()
+
+  self$get_base_url  <- function() base_url
+  self$get_file_path <- function() file_path
+  self$set_base_url  <- function(val) base_url  <<- val
+  self$set_file_path <- function(val) file_path <<- val
   
   
   self$get <- function(route, callback) {
@@ -36,8 +41,8 @@ Router <- mutatr::Object$clone()$do({
   }
     
   self$route <- function(path, query) {
+    p <- stringr::str_replace(path, self$get_base_url(), "")
     for(matcher in rev(self$matchers)) {
-      p <- str_replace(path, self$base_url, "")
       if (matcher$match(p)) {
         params <- matcher$params(p)
         params$query <- query
@@ -55,26 +60,33 @@ Router <- mutatr::Object$clone()$do({
     }
     
     # If none match, return 404
-    error(404)
+    self$error(404)
   }
     
   combine_url <- function(y) {
-    if(str_length(self$base_url) < 1) return(y)
-    u <- self$base_url
-    if(str_sub(u, start = -1) == "/") u <- str_sub(u, end = -2) 
-    str_c(u, y, sep = "/")
+    if(str_length(self$get_base_url()) < 1) return(y)
+    
+    u <- self$get_base_url()
+    if(str_sub(u, start = -1) == "/") {
+      u <- str_sub(u, end = -2)
+    }
+    
+    # url <- str_c(u, y, sep = "/")
+    url <- str_c(u, y)
+    url
   }
+  self$comb <- combine_url
   combine_path <- function(y){ 
     if(str_sub(y, end = 1) == "/"){
       y
     } else {
-      file.path(self$base_path, y)
+      file.path(self$get_file_path(), y)
     }
   }
   
-  self$error <- function(..., path){
-    p <- combine_url(path)
-    error(..., path = p)
+  self$error <- function(..., path = ""){
+    u <- combine_url(path)
+    error(..., path = u)
   }
   
   self$static_file <- function(path, ...) {
@@ -88,7 +100,7 @@ Router <- mutatr::Object$clone()$do({
   }
   
   self$render_brew <- function(..., path){
-    if(missing(path)) path <- self$base_path
+    if(missing(path)) path <- self$file_path
     
     render_brew(..., path = path, parent = parent.frame())
   }
