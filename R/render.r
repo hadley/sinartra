@@ -19,6 +19,7 @@ render <- function(text, status = 200L, mime_type = "text/html", headers = c()) 
 #' @param template string giving template name (file name without extension)
 #' @param params list of parameters to be evaluated in template
 #' @param path web app path
+#' @param parent parent.frame() to be used
 #' @export
 render_brew <- function(template, params = NULL, path = getwd(), parent = parent.frame()) {
   path <- file.path(path, "views", stringr::str_c(template, ".html"))
