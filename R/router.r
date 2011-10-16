@@ -52,7 +52,7 @@ Router <- mutatr::Object$clone()$do({
     p <- stringr::str_replace(path, self$base_url(), "")
     slash = self$matchers[[4]]
     
-    for(matcher in rev(self$matchers)) {
+    for(matcher in self$matchers) {
       matchOutput = matcher$match(p)
       if (matchOutput) {
         params <- matcher$params(p)
