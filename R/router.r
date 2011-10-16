@@ -20,18 +20,26 @@
 #'     callback will be called with a "splat" argument
 #' }
 #' @name Router
-#' @import evaluate
+#' @import evaluate stringr
 #' @export
 Router <- mutatr::Object$clone()$do({
   self$matchers  <- list()
-  base_url  <- ""
-  file_path <- getwd()
+  baseUrl  <- ""
+  filePath <- getwd()
 
-  self$get_base_url  <- function() base_url
-  self$get_file_path <- function() file_path
-  self$set_base_url  <- function(val) base_url  <<- val
-  self$set_file_path <- function(val) file_path <<- val
+  self$base_url  <- function(newBaseUrl = NULL) {
+    if ( ! is.null(newBaseUrl) ) {
+      baseUrl <<- newBaseUrl
+    } 
+    baseUrl
+  }
   
+  self$file_path <- function(newFilePath = NULL) {
+    if ( ! is.null(newFilePath) ) {
+      filePath <<- newFilePath
+    } 
+    filePath
+  }
   
   self$get <- function(route, callback) {
     rm <- route_matcher(route)
@@ -41,9 +49,12 @@ Router <- mutatr::Object$clone()$do({
   }
     
   self$route <- function(path, query) {
-    p <- stringr::str_replace(path, self$get_base_url(), "")
+    p <- stringr::str_replace(path, self$base_url(), "")
+    slash = self$matchers[[4]]
+    
     for(matcher in rev(self$matchers)) {
-      if (matcher$match(p)) {
+      matchOutput = matcher$match(p)
+      if (matchOutput) {
         params <- matcher$params(p)
         params$query <- query
         
@@ -64,23 +75,23 @@ Router <- mutatr::Object$clone()$do({
   }
     
   combine_url <- function(y) {
-    if(str_length(self$get_base_url()) < 1) return(y)
+    if(stringr::str_length(self$base_url()) < 1) return(y)
     
-    u <- self$get_base_url()
-    if(str_sub(u, start = -1) == "/") {
-      u <- str_sub(u, end = -2)
+    u <- self$base_url()
+    if(stringr::str_sub(u, start = -1) == "/") {
+      u <- stringr::str_sub(u, end = -2)
     }
     
     # url <- str_c(u, y, sep = "/")
-    url <- str_c(u, y)
+    url <- stringr::str_c(u, y)
     url
   }
   self$comb <- combine_url
   combine_path <- function(y){ 
-    if(str_sub(y, end = 1) == "/"){
+    if(stringr::str_sub(y, end = 1) == "/"){
       y
     } else {
-      file.path(self$get_file_path(), y)
+      file.path(self$file_path(), y)
     }
   }
   
@@ -100,7 +111,7 @@ Router <- mutatr::Object$clone()$do({
   }
   
   self$render_brew <- function(..., path){
-    if(missing(path)) path <- self$file_path
+    if(missing(path)) path <- self$file_path()
     
     render_brew(..., path = path, parent = parent.frame())
   }

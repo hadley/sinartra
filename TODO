@@ -8,3 +8,5 @@
 * vignette explaining how it works
 * complete other HTTP verbs
 * layout templates
+
+* splat of "/*" should not match the route of "/"
